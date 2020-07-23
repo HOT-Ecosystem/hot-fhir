@@ -37,3 +37,16 @@ def test_terminology_service(neo4j: Neo4jModels):
         ts = session.read_transaction(neo4j.match_terminology_service_by_name, 'BioPortal')
         assert len(ts) == 0
 
+
+def test_create_terminology_service(neo4j: Neo4jModels):
+    data = {
+        'identifier': 'test_id',
+        'name': 'test'
+    }
+    with neo4j.driver.session() as session:
+        session.write_transaction(neo4j.create_terminology_service, data)
+        ts = session.read_transaction(neo4j.match_terminology_service_by_name, 'test')
+        assert len(ts) == 1
+        session.write_transaction(neo4j.delete_terminology_service, 'test_id')
+        ts = session.read_transaction(neo4j.match_terminology_service_by_name, 'test')
+        assert len(ts) == 0

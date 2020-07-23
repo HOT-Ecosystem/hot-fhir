@@ -24,15 +24,15 @@ class Neo4jModels:
                " storage: $storage"
                "})")
         tx.run(cql,
-               identifier=data['identifier'],
-               url=data['url'],
-               name=data['name'],
-               type=data['type'],
-               description=data['description'],
-               publisher=data['publisher'],
-               rest_endpoint=data['rest_endpoint'],
-               sparql_endpoint=data['sparql_endpoint'],
-               storage=data['storage'])
+               identifier=data['identifier'],   # identifier is required
+               url=data.get('url', None),
+               name=data.get('name', None),
+               type=data.get('type', None),
+               description=data.get('description', None),
+               publisher=data.get('publisher', None),
+               rest_endpoint=data.get('rest_endpoint', None),
+               sparql_endpoint=data.get('sparql_endpoint', None),
+               storage=data.get('storage', None))
 
     @classmethod
     def match_terminology_service_by_name(cls, tx, val):
