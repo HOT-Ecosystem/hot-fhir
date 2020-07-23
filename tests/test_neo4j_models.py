@@ -10,7 +10,30 @@ def config():
     return cfg
 
 
-def test_create_terminology_service(config):
-    neo4j = config['neo4j']
-    models = Neo4jModels(neo4j['uri'], neo4j['user'], neo4j['password'])
-    print(models)
+@pytest.fixture(scope='session')
+def neo4j(config):
+    section = config['neo4j']
+    neo4j = Neo4jModels(section['uri'], section['user'], section['password'])
+    return neo4j
+
+
+def test_terminology_service(neo4j: Neo4jModels):
+    data = {
+        'identifier': 'bioportal',
+        'name': 'BioPortal',
+        'url': 'http://bioportal.bioontology.org/',
+        'type': 'ontology',
+        'rest_endpoint': 'https://data.bioontology.org',
+        'sparql_endpoint': 'http://sparql.bioontology.org',
+        'description': 'A short description',
+        'storage': 'triple store',
+        'publisher': 'National Center for Biomedical Ontology (NCBO)'
+    }
+    with neo4j.driver.session() as session:
+        session.write_transaction(neo4j.create_terminology_service, data)
+        ts = session.read_transaction(neo4j.match_terminology_service_by_name, 'BioPortal')
+        assert len(ts) == 1
+        session.write_transaction(neo4j.delete_terminology_service, 'bioportal')
+        ts = session.read_transaction(neo4j.match_terminology_service_by_name, 'BioPortal')
+        assert len(ts) == 0
+
