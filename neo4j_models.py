@@ -35,15 +35,48 @@ class Neo4jModels:
                storage=data.get('storage', None))
 
     @classmethod
-    def match_terminology_service_by_name(cls, tx, val):
-        val_regex = f'.*{val}.*'
-        cql = "MATCH (n1) WHERE n1.name =~ $val RETURN n1 LIMIT 20;"
-        result = tx.run(cql, val=val_regex)
+    def match_label_by_name(cls, tx, name, label=None):
+        val = f'.*{name}.*'
+        label = ':' + label if label is not None else ''
+        cql = f"MATCH (n{label}) WHERE n.name =~ $val RETURN n LIMIT 20"
+        result = tx.run(cql, val=val)
         return list(result)
 
     @classmethod
-    def delete_terminology_service(cls, tx, identifier):
-        cql = f"MATCH (n1) WHERE n1.identifier=$identifier DELETE n1;"
+    def delete_label_by_identifier(cls, tx, identifier, label=None):
+        label = ':' + label if label is not None else ''
+        cql = f"MATCH (n{label}) WHERE n.identifier=$identifier DELETE n;"
         tx.run(cql, identifier=identifier)
+
+    @classmethod
+    def create_naming_system(cls, tx, data):
+        cql = ("CREATE (:NamingSystem {"
+               " identifier: $identifier,"
+               " name: $name,"
+               " kind: 'codesystem',"
+               " status: $status,"
+               " publisher: $publisher,"
+               " type: $type,"
+               " usage: $usage,"
+               " unique_id: $unique_id"
+               " })")
+        tx.run(cql,
+               identifier=data.get('identifier', None),
+               name=data.get('name', None),
+               kind=data.get('kind', None),
+               status=data.get('status', None),
+               type=data.get('type', None),
+               usage=data.get('$usage', None),
+               publisher=data.get('publisher', None),
+               unique_id=data.get('unique_id', None))
+
+    @classmethod
+    def match_naming_system_by_name(cls, tx, name):
+        @classmethod
+        def match_terminology_service_by_name(cls, tx, name):
+            val = f'.*{name}.*'
+            cql = "MATCH (n1:NamingSystem) WHERE n1.name =~ $val RETURN n1 LIMIT 20;"
+            result = tx.run(cql, val=val)
+            return list(result)
 
 
