@@ -11,6 +11,10 @@ flask = "*"
 flask-restful = "*"
 fhirclient = "*"
 neo4j-driver = "*"
+flask-on-fhir = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
