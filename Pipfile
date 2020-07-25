@@ -11,7 +11,8 @@ flask = "*"
 flask-restful = "*"
 fhirclient = "*"
 neo4j-driver = "*"
-flask-on-fhir = "*"
+#flask-on-fhir = "*"
+flask-on-fhir = {editable = true, path = "/Users/djiao1/Projects/jiaola/flask-on-fhir"}
 
 [requires]
 python_version = "3.8"

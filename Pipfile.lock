@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c7bb36296435c2f6054996b999a0396edccd0e6992ddcd0dde88b62760f3ed12"
+            "sha256": "066a4e5f0161d0bb4a3d14e41b6493f2d66a2cf935fc5611bb56398c7a35d4f0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -62,12 +62,8 @@
             "version": "==1.1.2"
         },
         "flask-on-fhir": {
-            "hashes": [
-                "sha256:5eb2068b6fb0f20934fa1f00c71ca482526554ab914ab3eec8a765b1d9e173e9",
-                "sha256:c3aece3ce1cd7563758985c19cbf8955b0ee1c7a390844aed35e0e924547cdab"
-            ],
-            "index": "pypi",
-            "version": "==0.0.1.dev0"
+            "editable": true,
+            "path": "/Users/djiao1/Projects/jiaola/flask-on-fhir"
         },
         "flask-restful": {
             "hashes": [
