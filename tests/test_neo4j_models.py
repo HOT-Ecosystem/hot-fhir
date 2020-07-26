@@ -7,13 +7,12 @@ import pytest
 def config():
     cfg = configparser.ConfigParser()
     cfg.read('test_config.ini')
-    return cfg
+    return cfg['neo4j']
 
 
 @pytest.fixture(scope='session')
 def neo4j(config):
-    section = config['neo4j']
-    neo4j = Neo4jModels(section['uri'], section['user'], section['password'])
+    neo4j = Neo4jModels(config['uri'], config['user'], config['password'])
     return neo4j
 
 
