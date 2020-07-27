@@ -1,4 +1,4 @@
-from ..neo4j_models import Neo4jModels
+from hot_fhir.neo4j_models import Neo4jModels
 import configparser
 import pytest
 

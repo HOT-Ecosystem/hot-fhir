@@ -1,5 +1,5 @@
 import configparser
-import neo4j_models
+from hot_fhir import neo4j_models
 import requests
 
 

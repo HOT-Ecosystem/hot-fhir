@@ -1,6 +1,8 @@
 from flask import Flask
+from flask_on_fhir import FHIR
 
 app = Flask(__name__)
+fhir = FHIR(app)
 
 
 @app.route('/')

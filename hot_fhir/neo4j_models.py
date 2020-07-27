@@ -45,7 +45,7 @@ class Neo4jModels:
     @classmethod
     def delete_label_by_identifier(cls, tx, identifier, label=None):
         label = ':' + label if label is not None else ''
-        cql = f"MATCH (n{label}) WHERE n.identifier=$identifier DELETE n;"
+        cql = f"MATCH (n{label}) WHERE n.identifier=$identifier DELETE n"
         tx.run(cql, identifier=identifier)
 
     @classmethod
@@ -69,14 +69,5 @@ class Neo4jModels:
                usage=data.get('$usage', None),
                publisher=data.get('publisher', None),
                unique_id=data.get('unique_id', None))
-
-    @classmethod
-    def match_naming_system_by_name(cls, tx, name):
-        @classmethod
-        def match_terminology_service_by_name(cls, tx, name):
-            val = f'.*{name}.*'
-            cql = "MATCH (n1:NamingSystem) WHERE n1.name =~ $val RETURN n1 LIMIT 20;"
-            result = tx.run(cql, val=val)
-            return list(result)
 
 
