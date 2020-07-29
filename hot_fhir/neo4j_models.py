@@ -25,14 +25,14 @@ class Neo4jModels:
                "})")
         tx.run(cql,
                identifier=data['identifier'],   # identifier is required
-               url=data.get('url', None),
-               name=data.get('name', None),
-               type=data.get('type', None),
-               description=data.get('description', None),
-               publisher=data.get('publisher', None),
-               rest_endpoint=data.get('rest_endpoint', None),
-               sparql_endpoint=data.get('sparql_endpoint', None),
-               storage=data.get('storage', None))
+               url=data.get('url'),
+               name=data.get('name'),
+               type=data.get('type'),
+               description=data.get('description'),
+               publisher=data.get('publisher'),
+               rest_endpoint=data.get('rest_endpoint'),
+               sparql_endpoint=data.get('sparql_endpoint'),
+               storage=data.get('storage'))
 
     @classmethod
     def match_label_by_name(cls, tx, name, label=None):
@@ -53,21 +53,19 @@ class Neo4jModels:
         cql = ("CREATE (:NamingSystem {"
                " identifier: $identifier,"
                " name: $name,"
-               " kind: 'codesystem',"
+               " kind: $kind,"
                " status: $status,"
                " publisher: $publisher,"
-               " type: $type,"
                " usage: $usage,"
-               " unique_id: $unique_id"
+               " uri: $uri"
                " })")
         tx.run(cql,
-               identifier=data.get('identifier', None),
-               name=data.get('name', None),
-               kind=data.get('kind', None),
-               status=data.get('status', None),
-               type=data.get('type', None),
-               usage=data.get('$usage', None),
-               publisher=data.get('publisher', None),
-               unique_id=data.get('unique_id', None))
+               identifier=data['identifier'],   # identifier is required
+               name=data.get('name'),
+               kind=data.get('kind'),
+               status=data.get('status'),
+               publisher=data.get('publisher'),
+               usage=data.get('usage'),
+               uri=data.get('uri'))
 
 
