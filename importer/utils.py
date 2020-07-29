@@ -1,6 +1,7 @@
 import configparser
 from pymongo import MongoClient
 from pymongo.collection import Collection
+from hot_fhir.neo4j_models import Neo4jModels
 
 
 def config() -> dict:
@@ -19,3 +20,16 @@ def mongo_collection(collection: str) -> Collection:
         port = 27017
     mongo = MongoClient(host=host, port=port)
     return mongo.hotfhir[collection]
+
+
+def neo4j_models() -> Neo4jModels:
+    cfg = config()
+    if 'neo4j' in cfg.sections():
+        uri = cfg.has_option('neo4j', 'uri') and cfg.get('neo4j', 'uri') or 'bolt://localhost:7687'
+        user = cfg.has_option('neo4j', 'user') and cfg.get('neo4j', 'user') or 'neo4j'
+        password = cfg.has_option('neo4j', 'password') and cfg.get('neo4j', 'password') or 'neo4j'
+    else:
+        uri = 'bolt://localhost:7687'
+        user = 'neo4j'
+        password = 'neo4j'
+    return Neo4jModels(uri, user, password)

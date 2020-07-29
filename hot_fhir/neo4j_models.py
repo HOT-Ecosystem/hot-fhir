@@ -8,7 +8,7 @@ class Neo4jModels:
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
     def close(self):
-        self.graph.close()
+        self.driver.close()
 
     @classmethod
     def create_terminology_service(cls, tx, data):
@@ -57,8 +57,10 @@ class Neo4jModels:
                " status: $status,"
                " publisher: $publisher,"
                " usage: $usage,"
-               " uri: $uri"
-               " })")
+               " uri: $uri,"
+               " preferred_prefix: $preferred_prefix,"
+               " description: $description"
+               "})")
         tx.run(cql,
                identifier=data['identifier'],   # identifier is required
                name=data.get('name'),
@@ -66,6 +68,8 @@ class Neo4jModels:
                status=data.get('status'),
                publisher=data.get('publisher'),
                usage=data.get('usage'),
-               uri=data.get('uri'))
+               uri=data.get('uri'),
+               preferred_prefix=data.get('preferred_prefix'),
+               description=data.get('description'))
 
 
