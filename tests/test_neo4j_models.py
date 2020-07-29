@@ -46,6 +46,8 @@ def test_create_terminology_service(neo4j: Neo4jModels):
         session.write_transaction(neo4j.create_terminology_service, data)
         ts = session.read_transaction(neo4j.match_label_by_name, 'test', 'TerminologyService')
         assert len(ts) == 1
+        assert len(ts[0]['n'].keys()) == 2
+
         session.write_transaction(neo4j.delete_label_by_identifier, 'test_id', 'TerminologyService')
         ts = session.read_transaction(neo4j.match_label_by_name, 'test', 'TerminologyService')
         assert len(ts) == 0
