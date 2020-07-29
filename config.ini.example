@@ -1,0 +1,11 @@
+[neo4j]
+uri: bolt://localhost:7687
+user: neo4j
+password: fhir
+
+[bioportal]
+api_key: 6c8f625b-baf6-46db-b0ed-746972f3562e
+
+[mongodb]
+host: localhost
+port: 27017
