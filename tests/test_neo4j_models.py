@@ -18,8 +18,8 @@ def neo4j(config):
 
 def test_terminology_service(neo4j: Neo4jModels):
     data = {
-        'identifier': 'bioportal',
-        'name': 'BioPortal',
+        'identifier': '_bioportal',
+        'name': '_BioPortal',
         'url': 'http://bioportal.bioontology.org/',
         'type': 'ontology',
         'rest_endpoint': 'https://data.bioontology.org',
@@ -30,41 +30,41 @@ def test_terminology_service(neo4j: Neo4jModels):
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_terminology_service, data)
-        ts = session.read_transaction(neo4j.match_label_by_name, 'BioPortal', 'TerminologyService')
+        ts = session.read_transaction(neo4j.match_label_by_name, '_BioPortal', 'TerminologyService')
         assert len(ts) == 1
-        session.write_transaction(neo4j.delete_label_by_identifier, 'bioportal', 'TerminologyService')
+        session.write_transaction(neo4j.delete_label_by_identifier, '_bioportal', 'TerminologyService')
         ts = session.read_transaction(neo4j.match_label_by_name, 'BioPortal', 'TerminologyService')
         assert len(ts) == 0
 
 
 def test_create_terminology_service(neo4j: Neo4jModels):
     data = {
-        'identifier': 'test_id',
-        'name': 'test'
+        'identifier': '_test_id',
+        'name': '_test'
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_terminology_service, data)
-        ts = session.read_transaction(neo4j.match_label_by_name, 'test', 'TerminologyService')
+        ts = session.read_transaction(neo4j.match_label_by_name, '_test', 'TerminologyService')
         assert len(ts) == 1
         assert len(ts[0]['n'].keys()) == 2
 
-        session.write_transaction(neo4j.delete_label_by_identifier, 'test_id', 'TerminologyService')
-        ts = session.read_transaction(neo4j.match_label_by_name, 'test', 'TerminologyService')
+        session.write_transaction(neo4j.delete_label_by_identifier, '_test_id', 'TerminologyService')
+        ts = session.read_transaction(neo4j.match_label_by_name, '_test', 'TerminologyService')
         assert len(ts) == 0
 
 
 def test_create_naming_service(neo4j: Neo4jModels):
     data = {
-        'identifier': 'ncit',
-        'name': 'NCI Thesaurus',
+        'identifier': '_ncit',
+        'name': '_NCI Thesaurus',
         'publisher': 'National Cancer Institute (NCI)',
         'kind': 'codesystem'
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)
-        ts = session.read_transaction(neo4j.match_label_by_name, 'NCI Thesaurus', 'NamingSystem')
+        ts = session.read_transaction(neo4j.match_label_by_name, '_NCI Thesaurus', 'NamingSystem')
         assert len(ts) == 1
 
-        session.write_transaction(neo4j.delete_label_by_identifier, 'ncit', 'NamingSystem')
-        ts = session.read_transaction(neo4j.match_label_by_name, 'ncit', 'NamingSystem')
+        session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
+        ts = session.read_transaction(neo4j.match_label_by_name, '_NCI Thesaurus', 'NamingSystem')
         assert len(ts) == 0
