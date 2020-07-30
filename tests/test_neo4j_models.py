@@ -68,3 +68,20 @@ def test_create_naming_service(neo4j: Neo4jModels):
         session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
         ts = session.read_transaction(neo4j.match_label_by_name, '_NCI Thesaurus', 'NamingSystem')
         assert len(ts) == 0
+
+
+def test_match_label_by_id(neo4j: Neo4jModels):
+    data = {
+        'identifier': '_ncit',
+        'name': '_NCI Thesaurus',
+        'publisher': 'National Cancer Institute (NCI)',
+        'kind': 'codesystem'
+    }
+    with neo4j.driver.session() as session:
+        session.write_transaction(neo4j.create_naming_system, data)
+        ts = session.read_transaction(neo4j.match_label_by_id, '_ncit', 'NamingSystem')
+        assert len(ts) == 1
+
+        session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
+        ts = session.read_transaction(neo4j.match_label_by_id, '_ncit', 'NamingSystem')
+        assert len(ts) == 0
