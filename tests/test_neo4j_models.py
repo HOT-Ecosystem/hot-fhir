@@ -79,9 +79,12 @@ def test_match_label_by_id(neo4j: Neo4jModels):
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)
-        ts = session.read_transaction(neo4j.match_label_by_id, '_ncit', 'NamingSystem')
-        assert len(ts) == 1
+        n = session.read_transaction(neo4j.match_label_by_identifier, '_ncit', 'NamingSystem')
+        assert n is not None
+        assert 'publisher' in n.keys()
+        assert 'preferred_prefix' not in n.keys()
+        assert n.get('identifier') == '_ncit'
 
         session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
-        ts = session.read_transaction(neo4j.match_label_by_id, '_ncit', 'NamingSystem')
-        assert len(ts) == 0
+        n = session.read_transaction(neo4j.match_label_by_identifier, '_ncit', 'NamingSystem')
+        assert n is None

@@ -43,11 +43,11 @@ class Neo4jModels:
         return list(result)
 
     @classmethod
-    def match_label_by_id(cls, tx, id, label=None):
+    def match_label_by_identifier(cls, tx, val, label=None):
         label = ':' + label if label is not None else ''
         cql = f"MATCH (n{label}) WHERE n.identifier = $val RETURN n LIMIT 20"
-        result = tx.run(cql, val=id)
-        return list(result)
+        node = tx.run(cql, val=val).single()
+        return node is not None and node.value() or None
 
     @classmethod
     def delete_label_by_identifier(cls, tx, identifier, label=None):
