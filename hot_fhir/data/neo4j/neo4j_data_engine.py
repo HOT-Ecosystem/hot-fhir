@@ -4,32 +4,39 @@ from flask_on_fhir.restful_resources import FHIRResource
 
 from hot_fhir.data.neo4j import Neo4jModels
 from neo4j.graph import Node
-from fhirclient.models import *
+from typing import List, Union
+from importlib import import_module
 
 
-def node_to_fhir_resource(node: Node) -> FHIRResource:
-    label = list(node.labels)[0]
-    klass = globals()[label]
-    resource: label = klass()
+def node_to_fhir_resource(node: Node) -> Union[FHIRResource, None]:
+    for label in node.labels:
+        try:
+            module_path = f'fhirclient.models.{label.lower()}'
+            module = import_module(module_path)
+            klass = getattr(module, label)
+            resource: label = klass()
+        except ModuleNotFoundError as ex:
+            ...
+    if resource is None:
+        return None
+    for key in node.keys():
+        setattr(resource, key, node.get(key))
     return resource
 
 
 class Neo4jDataEngine(DataEngine):
-    def __init__(self, url, user, password):
-        self.neo4j = Neo4jModels(url, user, password)
+    def __init__(self, neo4j: Neo4jModels):
+        self.neo4j = neo4j
 
     def close(self):
-        self.neo4j.close()
+        if self.neo4j:
+            self.neo4j.close()
 
-    def get_fhir_resource(self, resource: str, *args, **kwargs):
-        ...
-
-    def get_naming_system_by_id(self, id: str) -> NamingSystem:
-        ns: NamingSystem = NamingSystem()
+    def get_fhir_resource_by_identifier(self, resource_type: str, identifier: str, *args, **kwargs):
         with self.neo4j.driver.session() as session:
-            node: Node = session.read_transaction(self.neo4j.match_label_by_identifier, id, 'NamingSystem')
+            node: Node = session.read_transaction(self.neo4j.match_label_by_identifier, identifier, resource_type)
         if node is None:
             return None
-        ns.name = node.get('name')
+        return node_to_fhir_resource(node)
 
 
