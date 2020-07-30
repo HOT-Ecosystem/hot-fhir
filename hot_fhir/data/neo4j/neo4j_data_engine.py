@@ -1,4 +1,5 @@
 from fhirclient.models.namingsystem import NamingSystem
+from fhirclient.models.extension import Extension
 from flask_on_fhir import DataEngine
 from flask_on_fhir.restful_resources import FHIRResource
 
@@ -14,13 +15,21 @@ def node_to_fhir_resource(node: Node) -> Union[FHIRResource, None]:
             module_path = f'fhirclient.models.{label.lower()}'
             module = import_module(module_path)
             klass = getattr(module, label)
-            resource: label = klass()
+            resource: label = klass(strict=False)
         except ModuleNotFoundError as ex:
             ...
     if resource is None:
         return None
+    extensions = []
     for key in node.keys():
-        setattr(resource, key, node.get(key))
+        if hasattr(resource, key):
+            setattr(resource, key, node.get(key))
+        else:
+            ext = Extension()
+            ext.url = key
+            ext.value = node.get(key)
+            extensions.append(ext)
+    resource.extension = extensions
     return resource
 
 

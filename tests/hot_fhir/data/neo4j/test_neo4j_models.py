@@ -59,7 +59,7 @@ def test_create_naming_service(neo4j: Neo4jModels):
         'identifier': '_ncit',
         'name': '_NCI Thesaurus',
         'publisher': 'National Cancer Institute (NCI)',
-        'kind': 'codesystem'
+        'kind': 'codesystem',
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)
@@ -76,7 +76,7 @@ def test_match_by_id(neo4j: Neo4jModels):
         'identifier': '_ncit',
         'name': '_NCI Thesaurus',
         'publisher': 'National Cancer Institute (NCI)',
-        'kind': 'codesystem'
+        'kind': 'codesystem',
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)

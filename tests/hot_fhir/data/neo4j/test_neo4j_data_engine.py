@@ -11,7 +11,8 @@ def node(neo4j) -> Node:
         'identifier': '_ncit',
         'name': '_NCI Thesaurus',
         'publisher': 'National Cancer Institute (NCI)',
-        'kind': 'codesystem'
+        'kind': 'codesystem',
+        'preferred_prefix': '_ncit',
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)
@@ -39,5 +40,7 @@ def test_invalid_node_to_fhir_resource(node):
 
 def test_get_fhir_resource_by_identifier(engine, node):
     res = engine.get_fhir_resource_by_identifier('NamingSystem', '_ncit')
+    print(res)
     assert type(res) is NamingSystem
     assert getattr(res, 'name') == '_NCI Thesaurus'
+    assert len(getattr(res, 'extension')) == 2
