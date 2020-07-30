@@ -78,5 +78,3 @@ class Neo4jModels:
                uri=data.get('uri'),
                preferred_prefix=data.get('preferred_prefix'),
                description=data.get('description'))
-
-

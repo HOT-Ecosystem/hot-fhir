@@ -1,4 +1,4 @@
-from hot_fhir.neo4j_models import Neo4jModels
+from hot_fhir.data.neo4j import Neo4jModels
 import configparser
 import pytest
 
@@ -13,7 +13,8 @@ def config():
 @pytest.fixture(scope='session')
 def neo4j(config):
     neo4j = Neo4jModels(config['uri'], config['user'], config['password'])
-    return neo4j
+    yield neo4j
+    neo4j.close()
 
 
 def test_terminology_service(neo4j: Neo4jModels):
@@ -84,6 +85,7 @@ def test_match_label_by_id(neo4j: Neo4jModels):
         assert 'publisher' in n.keys()
         assert 'preferred_prefix' not in n.keys()
         assert n.get('identifier') == '_ncit'
+        print(n)
 
         session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
         n = session.read_transaction(neo4j.match_label_by_identifier, '_ncit', 'NamingSystem')

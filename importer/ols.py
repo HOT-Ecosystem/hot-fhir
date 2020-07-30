@@ -1,5 +1,5 @@
 import configparser
-from hot_fhir import neo4j_models
+from hot_fhir.data.neo4j import neo4j_models
 from pymongo import MongoClient
 import requests
 

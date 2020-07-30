@@ -1,7 +1,7 @@
 import configparser
 from pymongo import MongoClient
 from pymongo.collection import Collection
-from hot_fhir.neo4j_models import Neo4jModels
+from hot_fhir.data.neo4j.neo4j_models import Neo4jModels
 
 
 def config() -> dict:
