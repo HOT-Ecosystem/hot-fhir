@@ -35,7 +35,7 @@ class Neo4jModels:
                storage=data.get('storage'))
 
     @classmethod
-    def match_label_by_name(cls, tx, name, label=None):
+    def match_by_name(cls, tx, name, label=None):
         val = f'.*{name}.*'
         label = ':' + label if label is not None else ''
         cql = f"MATCH (n{label}) WHERE n.name =~ $val RETURN n LIMIT 20"
@@ -43,14 +43,14 @@ class Neo4jModels:
         return list(result)
 
     @classmethod
-    def match_label_by_identifier(cls, tx, val, label=None):
+    def match_by_identifier(cls, tx, val, label=None):
         label = ':' + label if label is not None else ''
         cql = f"MATCH (n{label}) WHERE n.identifier = $val RETURN n LIMIT 20"
         node = tx.run(cql, val=val).single()
         return node is not None and node.value() or None
 
     @classmethod
-    def delete_label_by_identifier(cls, tx, identifier, label=None):
+    def delete_by_identifier(cls, tx, identifier, label=None):
         label = ':' + label if label is not None else ''
         cql = f"MATCH (n{label}) WHERE n.identifier=$identifier DELETE n"
         tx.run(cql, identifier=identifier)

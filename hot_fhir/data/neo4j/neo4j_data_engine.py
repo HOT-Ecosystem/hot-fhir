@@ -34,7 +34,7 @@ class Neo4jDataEngine(DataEngine):
 
     def get_fhir_resource_by_identifier(self, resource_type: str, identifier: str, *args, **kwargs):
         with self.neo4j.driver.session() as session:
-            node: Node = session.read_transaction(self.neo4j.match_label_by_identifier, identifier, resource_type)
+            node: Node = session.read_transaction(self.neo4j.match_by_identifier, identifier, resource_type)
         if node is None:
             return None
         return node_to_fhir_resource(node)

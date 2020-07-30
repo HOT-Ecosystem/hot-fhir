@@ -15,9 +15,9 @@ def node(neo4j) -> Node:
     }
     with neo4j.driver.session() as session:
         session.write_transaction(neo4j.create_naming_system, data)
-        n = session.read_transaction(neo4j.match_label_by_identifier, '_ncit', 'NamingSystem')
+        n = session.read_transaction(neo4j.match_by_identifier, '_ncit', 'NamingSystem')
         yield n
-        session.write_transaction(neo4j.delete_label_by_identifier, '_ncit', 'NamingSystem')
+        session.write_transaction(neo4j.delete_by_identifier, '_ncit', 'NamingSystem')
 
 @pytest.fixture(scope='session')
 def engine(neo4j) -> Neo4jDataEngine:
