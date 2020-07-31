@@ -41,6 +41,19 @@ class Neo4jDataEngine(DataEngine):
         if self.neo4j:
             self.neo4j.close()
 
+    def get_fhir_resource(self, resource: str, *args, **kwargs):
+        if 'resource_id' in kwargs:
+            return self.get_fhir_resource_by_identifier(resource, kwargs['resource_id'], *args, **kwargs)
+        else:
+            return self.get_fhir_resource_in_bundle(resource, *args, **kwargs)
+
+    def get_fhir_resource_in_bundle(self, resource_type: str, *args, **kwargs):
+        with self.neo4j.driver.session() as session:
+            node: Node = session.read_transaction(self.neo4j.match_by_identifier, '', resource_type)
+        if node is None:
+            return None
+        return node_to_fhir_resource(node)
+
     def get_fhir_resource_by_identifier(self, resource_type: str, identifier: str, *args, **kwargs):
         with self.neo4j.driver.session() as session:
             node: Node = session.read_transaction(self.neo4j.match_by_identifier, identifier, resource_type)
