@@ -5,7 +5,7 @@ import pytest
 
 
 @pytest.fixture(scope='function')
-def node(neo4j) -> Node:
+def node(neo4j_server) -> Node:
     data = {
         'identifier': '_ncit',
         'name': '_NCI Thesaurus',
@@ -13,11 +13,11 @@ def node(neo4j) -> Node:
         'kind': 'codesystem',
         'preferred_prefix': '_ncit',
     }
-    with neo4j.driver.session() as session:
-        session.write_transaction(neo4j.create_naming_system, data)
-        n = session.read_transaction(neo4j.match_by_identifier, '_ncit', 'NamingSystem')
+    with neo4j_server.driver.session() as session:
+        session.write_transaction(neo4j_server.create_naming_system, data)
+        n = session.read_transaction(neo4j_server.match_by_identifier, '_ncit', 'NamingSystem')
         yield n
-        session.write_transaction(neo4j.delete_by_identifier, '_ncit', 'NamingSystem')
+        session.write_transaction(neo4j_server.delete_by_identifier, '_ncit', 'NamingSystem')
 
 
 def test_node_to_fhir_resource(node):

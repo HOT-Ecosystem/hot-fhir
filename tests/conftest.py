@@ -24,7 +24,7 @@ def app():
 
 
 @pytest.fixture(scope="session")
-def neo4j(docker_ip, docker_services):
+def neo4j_server(docker_ip, docker_services):
     """ Ensure neo4j is up and responsive"""
     port = docker_services.port_for("fhir-neo4j", 7474)
     url = f'http://{docker_ip}:{port}'
@@ -39,8 +39,8 @@ def neo4j(docker_ip, docker_services):
 
 
 @pytest.fixture(scope="session")
-def data_engine(neo4j) -> Neo4jDataEngine:
-    engine = Neo4jDataEngine(neo4j)
+def data_engine(neo4j_server) -> Neo4jDataEngine:
+    engine = Neo4jDataEngine(neo4j_server)
     yield engine
     engine.close()
 
