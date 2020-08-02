@@ -19,12 +19,6 @@ def node(neo4j) -> Node:
         yield n
         session.write_transaction(neo4j.delete_by_identifier, '_ncit', 'NamingSystem')
 
-@pytest.fixture(scope='session')
-def engine(neo4j) -> Neo4jDataEngine:
-    engine = Neo4jDataEngine(neo4j)
-    yield engine
-    engine.close()
-
 
 def test_node_to_fhir_resource(node):
     r = node_to_fhir_resource(node)
@@ -37,8 +31,8 @@ def test_invalid_node_to_fhir_resource(node):
     assert getattr(res, 'name') == '_NCI Thesaurus'
 
 
-def test_get_fhir_resource_by_identifier(engine, node):
-    res = engine.get_fhir_resource_by_identifier('NamingSystem', '_ncit')
+def test_get_fhir_resource_by_identifier(data_engine, node):
+    res = data_engine.get_fhir_resource_by_identifier('NamingSystem', '_ncit')
     print(res)
     assert type(res) is NamingSystem
     assert getattr(res, 'name') == '_NCI Thesaurus'
