@@ -1,6 +1,5 @@
 from hot_fhir.data.neo4j import Neo4jModels
 
-
 def test_terminology_service(neo4j: Neo4jModels):
     data = {
         'identifier': '_bioportal',
