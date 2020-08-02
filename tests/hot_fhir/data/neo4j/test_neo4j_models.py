@@ -1,20 +1,4 @@
 from hot_fhir.data.neo4j import Neo4jModels
-import configparser
-import pytest
-
-
-@pytest.fixture(scope='session')
-def config():
-    cfg = configparser.ConfigParser()
-    cfg.read('test_config.ini')
-    return cfg['neo4j']
-
-
-@pytest.fixture(scope='session')
-def neo4j(config):
-    neo4j = Neo4jModels(config['uri'], config['user'], config['password'])
-    yield neo4j
-    neo4j.close()
 
 
 def test_terminology_service(neo4j: Neo4jModels):
