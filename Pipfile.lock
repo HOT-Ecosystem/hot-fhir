@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "37c41a8c275b67e0be27f282e6da9bae21fd0f0e054268e9eee05d2fac77d4dd"
+            "sha256": "ab413e1b2f0f039f397af47be07371941ea473b0b285d7b32bd34e88d789f0bd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -149,6 +149,13 @@
             ],
             "index": "pypi",
             "version": "==4.1.0"
+        },
+        "neotime": {
+            "hashes": [
+                "sha256:4e0477ba0f24e004de2fa79a3236de2bd941f20de0b5db8d976c52a86d7363eb"
+            ],
+            "index": "pypi",
+            "version": "==1.7.4"
         },
         "pymongo": {
             "hashes": [

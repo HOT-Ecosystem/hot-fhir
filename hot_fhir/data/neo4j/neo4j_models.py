@@ -35,6 +35,12 @@ class Neo4jModels:
                storage=data.get('storage'))
 
     @classmethod
+    def match_all(cls, tx, label):
+        cql = f"MATCH (n{label}) RETURN n LIMIT 20"
+        result = tx.run(cql)
+        return list(result)
+
+    @classmethod
     def match_by_name(cls, tx, name, label=None):
         val = f'.*{name}.*'
         label = ':' + label if label is not None else ''
@@ -66,7 +72,8 @@ class Neo4jModels:
                " usage: $usage,"
                " uri: $uri,"
                " preferred_prefix: $preferred_prefix,"
-               " description: $description"
+               " description: $description,"
+               " date: $date"
                "})")
         tx.run(cql,
                identifier=data['identifier'],   # identifier is required
@@ -77,4 +84,5 @@ class Neo4jModels:
                usage=data.get('usage'),
                uri=data.get('uri'),
                preferred_prefix=data.get('preferred_prefix'),
-               description=data.get('description'))
+               description=data.get('description'),
+               date=data.get('date'))

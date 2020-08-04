@@ -1,21 +1,25 @@
-from fhirclient.models.namingsystem import NamingSystem
+from fhirclient.models.resource import Resource
+from fhirclient.models.namingsystem import NamingSystemUniqueId
 from fhirclient.models.extension import Extension
+from fhirclient.models.bundle import Bundle
 from flask_on_fhir import DataEngine
+from fhirclient.models.fhirdate import FHIRDate
 from flask_on_fhir.restful_resources import FHIRResource
 
 from hot_fhir.data.neo4j import Neo4jModels
 from neo4j.graph import Node
 from typing import List, Union
 from importlib import import_module
+import json
 
 
-def node_to_fhir_resource(node: Node) -> Union[FHIRResource, None]:
+def node_to_fhir_resource(node: Node) -> Union[Resource, None]:
     for label in node.labels:
         try:
             module_path = f'fhirclient.models.{label.lower()}'
             module = import_module(module_path)
             klass = getattr(module, label)
-            resource: label = klass(strict=False)
+            resource: Resource  = klass(strict=False)
         except ModuleNotFoundError as ex:
             ...
     if resource is None:
@@ -23,12 +27,18 @@ def node_to_fhir_resource(node: Node) -> Union[FHIRResource, None]:
     extensions = []
     for key in node.keys():
         if hasattr(resource, key):
-            setattr(resource, key, node.get(key))
+            if key == 'date':
+                setattr(resource, key, FHIRDate(node.get(key)))
+            else:
+                setattr(resource, key, node.get(key))
         else:
-            ext = Extension()
-            ext.url = key
-            ext.value = node.get(key)
-            extensions.append(ext)
+            if key == 'identifier':
+                setattr(resource, 'uniqueId', [NamingSystemUniqueId(json.loads('{"type": "other", "value": "' + node.get(key) + '"}'))])
+            else:
+                ext = Extension()
+                ext.url = key
+                ext.value = node.get(key)
+                extensions.append(ext)
     resource.extension = extensions
     return resource
 
@@ -48,11 +58,14 @@ class Neo4jDataEngine(DataEngine):
             return self.get_fhir_resource_in_bundle(resource, *args, **kwargs)
 
     def get_fhir_resource_in_bundle(self, resource_type: str, *args, **kwargs):
+        bundle = Bundle()
         with self.neo4j.driver.session() as session:
-            node: Node = session.read_transaction(self.neo4j.match_by_identifier, '', resource_type)
-        if node is None:
+            nodes: List[Node] = session.read_transaction(self.neo4j.match_all(), resource_type)
+        if nodes is None or nodes.le:
             return None
-        return node_to_fhir_resource(node)
+        for node in nodes:
+            ...
+        return bundle
 
     def get_fhir_resource_by_identifier(self, resource_type: str, identifier: str, *args, **kwargs):
         with self.neo4j.driver.session() as session:

@@ -1,5 +1,3 @@
-from hot_fhir.data.neo4j import Neo4jModels
-
 def test_terminology_service(neo4j_server):
     data = {
         'identifier': '_bioportal',
@@ -37,7 +35,7 @@ def test_create_terminology_service(neo4j_server):
         assert len(ts) == 0
 
 
-def test_create_naming_service(neo4j_server):
+def test_create_naming_system(neo4j_server):
     data = {
         'identifier': '_ncit',
         'name': '_NCI Thesaurus',
