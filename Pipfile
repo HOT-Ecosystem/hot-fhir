@@ -19,6 +19,7 @@ flask-on-fhir = {editable = true, path = "/Users/djiao1/Projects/jiaola/flask-on
 pymongo = "*"
 neotime = "*"
 py2neo = "*"
+fhirbase = "*"
 
 [requires]
 python_version = "3.8"
