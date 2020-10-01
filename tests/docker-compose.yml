@@ -9,3 +9,9 @@ services:
     ports:
       - "7768:7687"
       - "4747:7474"
+
+  fhir-base:
+    image: fhirbase/fhirbase:latest
+    container_name: hot-fhir-test-fhirbase
+    ports:
+      - "2345:5432"
