@@ -18,6 +18,7 @@ neo4j-driver = "*"
 flask-on-fhir = {editable = true, path = "/Users/djiao1/Projects/jiaola/flask-on-fhir"}
 pymongo = "*"
 neotime = "*"
+py2neo = "*"
 
 [requires]
 python_version = "3.8"
