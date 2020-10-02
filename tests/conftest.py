@@ -1,15 +1,10 @@
-import json
-
 import psycopg2
 import pytest
-from fhirbase import FHIRBase
-from fhirclient.models.codesystem import CodeSystem
-from fhirclient.models.valueset import ValueSet
-from flask import Flask
-import configparser
 import requests
-from requests.exceptions import ConnectionError
+from fhirbase import FHIRBase
+from flask import Flask
 from py2neo import Graph
+from requests.exceptions import ConnectionError
 
 
 def is_responsive(url):
@@ -45,4 +40,3 @@ def fhirbase(docker_ip, docker_services):
     port = docker_services.port_for('fhir-base', 5432)
     connection = psycopg2.connect(dbname='fhirbase', user='postgres', host=docker_ip, port=port)
     yield FHIRBase(connection)
-
