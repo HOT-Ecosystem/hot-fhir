@@ -1,15 +1,8 @@
+import json
+
 from hot_fhir.db.neo4j.operations import *
 import pytest
 from py2neo import Node
-from neotime import Date
-import json
-
-
-@pytest.fixture(autouse=True)
-def neo4j_transact(neo4j_graph):
-    neo4j_graph.delete_all()
-    yield
-    neo4j_graph.delete_all()
 
 
 @pytest.fixture(scope='function')
@@ -17,6 +10,13 @@ def value_set_example(shared_datadir) -> ValueSet:
     with open(shared_datadir/'valueset-example.json', 'r') as h:
         value_set = ValueSet(json.load(h))
     yield value_set
+
+
+@pytest.fixture(autouse=True)
+def neo4j_transact(neo4j_graph):
+    neo4j_graph.delete_all()
+    yield
+    neo4j_graph.delete_all()
 
 
 @pytest.fixture(scope='function')

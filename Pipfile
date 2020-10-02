@@ -20,6 +20,7 @@ pymongo = "*"
 neotime = "*"
 py2neo = "*"
 fhirbase = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"

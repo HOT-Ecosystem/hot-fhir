@@ -1,5 +1,10 @@
+import json
+
+import psycopg2
 import pytest
+from fhirbase import FHIRBase
 from fhirclient.models.codesystem import CodeSystem
+from fhirclient.models.valueset import ValueSet
 from flask import Flask
 import configparser
 import requests
@@ -27,10 +32,17 @@ def neo4j_graph(docker_ip, docker_services):
     port = docker_services.port_for('fhir-neo4j', 7474)
     url = f'http://{docker_ip}:{port}'
     docker_services.wait_until_responsive(
-        timeout=30.0, pause=0.1, check=lambda : is_responsive(url)
+        timeout=60.0, pause=0.1, check=lambda: is_responsive(url)
     )
     bolt_port = docker_services.port_for('fhir-neo4j', 7687)
     bolt_url = f'bolt://{docker_ip}:{bolt_port}'
     graph = Graph(bolt_url, auth=('neo4j', 'password'))
     yield graph
+
+
+@pytest.fixture(scope='session')
+def fhirbase(docker_ip, docker_services):
+    port = docker_services.port_for('fhir-base', 5432)
+    connection = psycopg2.connect(dbname='fhirbase', user='postgres', host=docker_ip, port=port)
+    yield FHIRBase(connection)
 
