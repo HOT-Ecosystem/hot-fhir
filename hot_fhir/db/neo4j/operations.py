@@ -29,7 +29,7 @@ def add_value_set_to_graph(value_set: ValueSet, graph: Graph) -> Node:
         return None
 
 
-def delete_value_set(value_set: ValueSet, graph: Graph) -> bool:
+def delete_value_set_from_graph(value_set: ValueSet, graph: Graph) -> bool:
     nodes = NodeMatcher(graph)
     node = nodes.match('ValueSet', id=value_set.id).first()
     tx = graph.begin()

@@ -45,7 +45,7 @@ def test_delete_value_set(neo4j_graph, value_set_example):
     nodes = NodeMatcher(neo4j_graph).match('ValueSet', id=value_set_example.id)
     assert len(nodes) == 1
 
-    delete_value_set(value_set_example, neo4j_graph)
+    delete_value_set_from_graph(value_set_example, neo4j_graph)
     node = NodeMatcher(neo4j_graph).match('ValueSet', id=value_set_example.id).first()
     assert node is None
 
