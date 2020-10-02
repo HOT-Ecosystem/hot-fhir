@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "62a3d73c9376937fccf3d1ae7bee1ab720d17b3ac1375f2f4099d7bff60db44d"
+            "sha256": "c4a31905418e0cce3a1f139c6c1bf84047d99f61ba62f163fc97d65d813049d7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -240,13 +240,6 @@
                 "sha256:552a91f381532e33cbd07c6a2655a21908088962bb8fa7239ecbcc6ad1140cc7"
             ],
             "version": "==1.5"
-        },
-        "neo4j-driver": {
-            "hashes": [
-                "sha256:21fa285a9d3bbb9dd50d9d9b379376a42fac2ed0706d58520ec36c6afd12f252"
-            ],
-            "index": "pypi",
-            "version": "==4.1.1"
         },
         "neotime": {
             "hashes": [

@@ -6,7 +6,6 @@ from neotime import Date
 from fhirclient.models.namingsystem import NamingSystemUniqueId, NamingSystem
 
 
-
 @pytest.fixture
 def naming_system_record(neo4j_server):
     """ Insert a naming system record. Clean up after the tests are run """
