@@ -1,10 +1,14 @@
+import json
+
 import psycopg2
 import pytest
 import requests
 from fhirbase import FHIRBase
+from fhirclient.models.valueset import ValueSet
 from flask import Flask
 from py2neo import Graph
 from requests.exceptions import ConnectionError
+from distutils import dir_util
 
 
 def is_responsive(url):
@@ -20,6 +24,20 @@ def is_responsive(url):
 def app():
     app = Flask(__name__)
     return app
+
+
+@pytest.fixture
+def datadir(tmpdir, pytestconfig):
+    data_dir = pytestconfig.rootpath / 'tests/data'
+    dir_util.copy_tree(str(data_dir), str(tmpdir))
+    return tmpdir
+
+
+@pytest.fixture
+def value_set_example(datadir) -> ValueSet:
+    with open(datadir/'valueset-example.json', 'r') as h:
+        value_set = ValueSet(json.load(h))
+    yield value_set
 
 
 @pytest.fixture(scope='session')

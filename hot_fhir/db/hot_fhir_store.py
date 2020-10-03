@@ -21,3 +21,18 @@ class HotFhirStore:
         else:
             return False
 
+    def find_value_set(self, field, value):
+
+        pass
+
+    def add_code_system(self, code_system: CodeSystem):
+        pass
+
+    def delete_code_system(self, code_system: CodeSystem):
+        pass
+
+    def find_code_system(self, field, value):
+        pass
+
+
+

@@ -15,3 +15,7 @@ def delete_value_set_from_fhirbase(value_set: ValueSet, fhirbase: FHIRBase) -> d
 
 def add_code_system_to_fhirbase(code_system: CodeSystem) -> bool:
     pass
+
+
+def find_value_set(field, name) -> ValueSet:
+    value_set

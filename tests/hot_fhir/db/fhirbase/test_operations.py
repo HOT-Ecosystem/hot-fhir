@@ -1,14 +1,4 @@
-import json
-
-import pytest
 from hot_fhir.db.fhirbase.operations import *
-
-
-@pytest.fixture(scope='function')
-def value_set_example(shared_datadir) -> ValueSet:
-    with open(shared_datadir/'valueset-example.json', 'r') as h:
-        value_set = ValueSet(json.load(h))
-    yield value_set
 
 
 def test_add_value_set_to_fhirbase(value_set_example: ValueSet, fhirbase: FHIRBase):
