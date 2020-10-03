@@ -1,7 +1,7 @@
 hot-fhir
 ==
 
-[![](https://github.com/hot-ecosystem/hot-fhir/workflows/Build/badge.svg)]((https://github.com/hot-ecosystem/hot-fhir/actions))
+![Tests](https://github.com/HOT-Ecosystem/hot-fhir/workflows/Tests/badge.svg)
 
 ## Tests
 
