@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "56c8dbc8c1513dcb4d16770eedf0d4e1627d47b87b38c059f7d377921867b851"
+            "sha256": "b6958efab5104bed62adf401375c46865ebee54b2f6c7d307d7c839c2406621d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -761,14 +761,6 @@
             ],
             "index": "pypi",
             "version": "==6.1.0"
-        },
-        "pytest-datadir": {
-            "hashes": [
-                "sha256:1847ed0efe0bc54cac40ab3fba6d651c2f03d18dd01f2a582979604d32e7621e",
-                "sha256:d3af1e738df87515ee509d6135780f25a15959766d9c2b2dbe02bf4fb979cb18"
-            ],
-            "index": "pypi",
-            "version": "==1.3.1"
         },
         "pytest-docker": {
             "hashes": [

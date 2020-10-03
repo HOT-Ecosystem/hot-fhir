@@ -8,7 +8,6 @@ pytest = "*"
 pytest-flask = "*"
 pytest-docker = "*"
 docker-compose = "*"
-pytest-datadir = "*"
 
 [packages]
 flask = "*"
