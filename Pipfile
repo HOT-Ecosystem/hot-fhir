@@ -14,7 +14,6 @@ flask = "*"
 flask-restful = "*"
 fhirclient = "*"
 #flask-on-fhir = "*"
-flask-on-fhir = {editable = true, path = "/Users/djiao1/Projects/jiaola/flask-on-fhir"}
 pymongo = "*"
 neotime = "*"
 py2neo = "*"
