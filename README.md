@@ -1,7 +1,7 @@
 hot-fhir
 ==
 
-![](https://github.com/biolink/biolinkml/workflows/Build/badge.svg)
+[![](https://github.com/hot-ecosystem/hot-fhir/workflows/Build/badge.svg)]((https://github.com/hot-ecosystem/hot-fhir/actions))
 
 ## Tests
 
