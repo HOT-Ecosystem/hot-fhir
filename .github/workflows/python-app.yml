@@ -22,16 +22,15 @@ jobs:
         python-version: 3.8
     - name: Install pipenv
       uses: dschep/install-pipenv-action@v1
-    - name: psycopg2 prerequisites
-      run: sudo apt-get install python-dev libpq-dev
+    - name: Install pyscopg2 prerequisites
+      run: sudo apt-get install libpq-dev
     - name: Install dependencies
       run: |
-        sudo apt-get install libpq-dev
         python -m pip install --upgrade pip
         pip install flake8 pytest
+        pip install pipenv-to-requirements
+        pipenv_to_requirements
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pipenv install
-        pipenv run pip install pyscopg2
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
